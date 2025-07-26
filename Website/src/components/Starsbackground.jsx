@@ -1,41 +1,76 @@
-// src/components/StarsBackground.jsx
-import { useEffect, useState } from 'react'
+import { useEffect, useRef } from 'react';
+import * as THREE from 'three';
 
 export default function StarsBackground() {
-  const [stars, setStars] = useState([])
+  const mountRef = useRef(null);
 
   useEffect(() => {
-    const newStars = []
-    for (let i = 0; i < 100; i++) {
-      newStars.push({
-        id: i,
-        size: Math.random() * 3,
-        left: Math.random() * 100,
-        top: Math.random() * 100,
-        opacity: Math.random(),
-        animationDuration: `${5 + Math.random() * 15}s`,
-        animationDelay: `${Math.random() * 5}s`,
-      })
-    }
-    setStars(newStars)
-  }, [])
+    // Scene setup
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0x000000, 0); // Transparent background
+    mountRef.current.appendChild(renderer.domElement);
 
-  return (
-    <div className="fixed inset-0 overflow-hidden -z-10">
-      {stars.map((star) => (
-        <div
-          key={star.id}
-          className="absolute rounded-full bg-white"
-          style={{
-            width: `${star.size}px`,
-            height: `${star.size}px`,
-            left: `${star.left}%`,
-            top: `${star.top}%`,
-            opacity: star.opacity,
-            animation: `twinkle ${star.animationDuration} infinite alternate ${star.animationDelay}`,
-          }}
-        />
-      ))}
-    </div>
-  )
+    // Create 2D starfield
+    const starsGeometry = new THREE.BufferGeometry();
+    const starCount = 2000;
+    
+    const positions = new Float32Array(starCount * 3);
+    const sizes = new Float32Array(starCount);
+    
+    for (let i = 0; i < starCount; i++) {
+      positions[i * 3] = (Math.random() - 0.5) * 2000;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 2000;
+      positions[i * 3 + 2] = -100; // Keep stars at same Z-depth for 2D
+      sizes[i] = Math.random() * 2;
+    }
+    
+    starsGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    starsGeometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+
+    const starsMaterial = new THREE.PointsMaterial({
+      color: 0xffffff,
+      size: 1,
+      transparent: true,
+      opacity: 0.8,
+      blending: THREE.AdditiveBlending
+    });
+
+    const starField = new THREE.Points(starsGeometry, starsMaterial);
+    scene.add(starField);
+
+    // Animation loop
+    let reqId;
+    const animate = () => {
+      reqId = requestAnimationFrame(animate);
+      
+      // Gentle parallax movement
+      starField.rotation.x += 0.0001;
+      starField.rotation.y += 0.0001;
+      
+      // Subtle pulsing effect
+      starsMaterial.opacity = 0.7 + Math.sin(Date.now() * 0.001) * 0.3;
+      
+      renderer.render(scene, camera);
+    };
+    animate();
+
+    // Handle resize
+    const handleResize = () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    };
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      cancelAnimationFrame(reqId);
+      window.removeEventListener('resize', handleResize);
+      mountRef.current?.removeChild(renderer.domElement);
+    };
+  }, []);
+
+  return <div ref={mountRef} className="fixed top-0 left-0 w-full h-full -z-10 pointer-events-none" />;
 }

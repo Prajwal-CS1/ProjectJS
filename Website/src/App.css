@@ -40,3 +40,63 @@
 .read-the-docs {
   color: #888;
 }
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fadeInUp {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+/* Ensure proper sizing for 3D containers */
+.planet-container {
+  width: 100%;
+  height: 100%;
+}
+
+/* Animation for scroll-triggered elements */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fadeInUp {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+/* 3D Canvas Fix */
+canvas {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+}
+
+/* Enhanced Star Twinkling */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 1; }
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Three.js canvas fix */
+canvas {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+/* Animation enhancements */
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
