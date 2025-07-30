@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';  // Added import
 import blackholeVideo from '../assets/blackhole.mp4';
 import blackholeFallback from '../assets/blackhole.jpg';
 import nebula from '../assets/nebula.jpg';
@@ -111,9 +112,12 @@ export default function Home() {
           <p className="text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed max-w-2xl mx-auto">
             Dive into the universe's most fascinating phenomena - from black holes to galaxies and beyond.
           </p>
-          <button className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full font-medium text-white hover:opacity-90 transition-all transform hover:scale-105 shadow-lg shadow-blue-500/20 hover:shadow-purple-500/40">
+          <Link 
+            to="/planets" 
+            className="inline-block px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full font-medium text-white hover:opacity-90 transition-all transform hover:scale-105 shadow-lg shadow-blue-500/20 hover:shadow-purple-500/40"
+          >
             Begin Exploration
-          </button>
+          </Link>
         </div>
 
         <div className="absolute bottom-10 left-0 right-0 flex justify-center">
@@ -187,9 +191,12 @@ export default function Home() {
           <p className="text-xl text-gray-300 mb-8 leading-relaxed max-w-3xl">
             Nebulas are stellar nurseries where stars are born. These magnificent clouds of gas and dust create the most spectacular light shows in the universe.
           </p>
-          <button className="px-6 py-2 border-2 border-blue-400 text-blue-400 rounded-full font-medium hover:bg-blue-400/10 transition-all transform hover:scale-105 hover:text-white hover:border-blue-300">
-            Discover Nebulas
-          </button>
+          <Link 
+  to="/nebulas" 
+  className="px-6 py-2 border-2 border-blue-400 text-blue-400 rounded-full font-medium hover:bg-blue-400/10 transition-all transform hover:scale-105 hover:text-white hover:border-blue-300"
+>
+  Discover Nebulas
+</Link>
         </div>
       </section>
     </div>
