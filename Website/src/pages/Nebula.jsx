@@ -1,11 +1,17 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import nebulaHero from '../assets/nebula-hero.jpg'; // Main nebula image
-import nebula1 from '../assets/nebula1.jpg'; // Additional nebula images
+import { useEffect } from 'react';
+import nebulaHero from '../assets/nebula-hero.jpg';
+import nebula1 from '../assets/nebula1.jpg';
 import nebula2 from '../assets/nebula2.jpg';
 import nebula3 from '../assets/nebula3.jpg';
 
 export default function Nebula() {
+  // Auto-scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const nebulas = [
     {
       name: "Orion Nebula",
